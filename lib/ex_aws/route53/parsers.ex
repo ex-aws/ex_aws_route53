@@ -85,7 +85,7 @@ if Code.ensure_loaded?(SweetXml) do
           values: ~x"./ResourceRecords/ResourceRecord/Value/text()"sl,
           set_identifier: ~x"./SetIdentifier/text()"so,
           traffic_policy_instance_id: ~x"./TrafficPolicyInstanceId/text()"so,
-          ttl: ~x"./TTL/text()"i,
+          ttl: ~x"./TTL/text()"io,
           type: ~x"./Type/text()"s,
           weight: ~x"./Weight/text()"Io
         ]
