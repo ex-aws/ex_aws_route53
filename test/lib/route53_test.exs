@@ -2,7 +2,7 @@ defmodule ExAws.Route53Test do
   use ExUnit.Case, async: true
   alias ExAws.Route53
   alias ExAws.Operation.RestQuery
-  import SweetXml, only: [xpath: 2, xpath: 3, sigil_x: 2]
+  import SweetXml
 
   test "list hosted zones" do
     expected = %RestQuery{
@@ -34,6 +34,7 @@ defmodule ExAws.Route53Test do
 
     response = %RestQuery{} = Route53.create_hosted_zone name: "example.com"
     assert expected_response == Map.take(response, [:service, :path, :action, :http_method, :params, :parser])
+    assert "https://route53.amazonaws.com/doc/2013-04-01/" == document_namespace(response)
     payload = response.body |> xpath(
       ~x"//CreateHostedZoneRequest",
       caller_reference: ~x"./CallerReference/text()"s,
@@ -123,6 +124,7 @@ defmodule ExAws.Route53Test do
      records: ["ns1.example.com", "ns2.example.com"]
    )
     assert expected_response == Map.take(response, [:service, :path, :action, :http_method, :params, :parser])
+    assert "https://route53.amazonaws.com/doc/2013-04-01/" == document_namespace(response)
     payload = response |> parse_change_record_sets_response
     assert payload == [%{
       action: "UPSERT",
@@ -230,5 +232,13 @@ defmodule ExAws.Route53Test do
         records: ~x"./ResourceRecords/ResourceRecord/Value/text()"ls,
       ]
     )
+  end
+
+  defp document_namespace(%{body: body}) do
+    body
+    |> parse
+    |> xmlElement(:namespace)
+    |> elem(1)
+    |> to_string
   end
 end
