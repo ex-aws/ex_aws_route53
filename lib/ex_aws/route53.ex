@@ -8,6 +8,8 @@ defmodule ExAws.Route53 do
   """
   @type record_type :: [:a | :aaaa | :cname | :mx | :naptr | :ns | :ptr | :soa | :spf | :srv | :txt]
 
+  @xmlns "https://route53.amazonaws.com/doc/2013-04-01/"
+
   @type list_hosted_zones_opts :: [
     {:marker, binary} |
     {:max_items, 1..100}
@@ -30,7 +32,7 @@ defmodule ExAws.Route53 do
   @spec create_hosted_zone(opts :: create_hosted_zone_opts) :: ExAws.Operation.RestQuery.t
   def create_hosted_zone(opts \\ []) do
     payload = {
-      :CreateHostedZoneRequest, %{Xmlns: "https://route53.amazonaws.com/doc/2013-04-01/"}, [
+      :CreateHostedZoneRequest, %{xmlns: @xmlns}, [
        {:CallerReference, nil, uuid()},
        {:Name, nil, opts[:name]}]
     } |> add_optional_node({:DelegationSetId, nil, opts[:delegation_set]})
@@ -74,7 +76,7 @@ defmodule ExAws.Route53 do
   def change_record_sets(id, opts \\ []) do
     changes = opts |> Keyword.get(:batch, Map.new(opts)) |> List.wrap
     payload = {
-      :ChangeResourceRecordSetsRequest, %{Xmlns: "https://route53.amazonaws.com/doc/2013-04-01/"},[
+      :ChangeResourceRecordSetsRequest, %{xmlns: @xmlns},[
        {:ChangeBatch, nil, [
          {:Changes, nil, [
            changes |> Enum.map(fn(change) ->
