@@ -55,11 +55,17 @@ defmodule ExAws.Route53 do
   end
 
   @type record_action :: [:create | :delete | :upsert]
+  @type alias_target :: [
+    {:id, binary},
+    {:name, binary},
+    {:evaluate_health, boolean},
+  ]
   @type record_opts :: [
     {:action, record_action} |
     {:name, binary} |
     {:type, record_type} |
     {:ttl, Integer.t} |
+    {:alias, alias_target} |
     {:records, [String.t, ...]}
   ]
   @type change_record_sets_opts :: [
@@ -84,14 +90,25 @@ defmodule ExAws.Route53 do
                {:Action, nil, upcase(change[:action])},
                {:ResourceRecordSet, nil, [
                  {:Name, nil, change[:name]},
-                 {:Type, nil, upcase(change[:type])},
-                 {:TTL, nil, change[:ttl]},
+                 {:Type, nil, upcase(change[:type])}
+               ]}
+               |> add_optional_node(
+                      case change[:alias] do
+                        nil -> nil
+                        alias -> {:AliasTarget, nil, [
+                                {:DNSName, nil, alias[:name]},
+                                {:EvaluateTargetHealth, nil, alias[:evaluate_health]},
+                                {:HostedZoneId, nil, alias[:id]},
+                               ]}
+                      end)
+               |> add_optional_node({:TTL, nil, change[:ttl]})
+               |> add_optional_node(
                  {:ResourceRecords, nil, change |> Map.get(:records, []) |> Enum.map(fn value ->
                    {:ResourceRecord, nil, [
                      {:Value, nil, value}
                    ]}
-                 end)}
-               ]}
+                 end)
+               })
              ]}
            end)
          ]},
