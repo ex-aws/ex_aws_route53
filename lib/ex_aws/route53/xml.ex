@@ -3,7 +3,9 @@ defmodule ExAws.Route53.Xml do
 
   if Code.ensure_loaded?(XmlBuilder) do
     def build(doc) do
-      XmlBuilder.doc(doc)
+      doc
+      |> XmlBuilder.document()
+      |> XmlBuilder.generate()
     end
   else
     def build(_doc) do
