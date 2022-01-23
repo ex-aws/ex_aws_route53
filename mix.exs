@@ -1,7 +1,7 @@
 defmodule ExAws.Route53.Mixfile do
   use Mix.Project
 
-  @version "2.0.2"
+  @version "2.1.0"
   @service "route53"
   @url "https://github.com/ex-aws/ex_aws_#{@service}"
   @name __MODULE__ |> Module.split() |> Enum.take(2) |> Enum.join(".")
