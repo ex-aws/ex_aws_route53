@@ -4,25 +4,24 @@ defmodule ExAws.Route53.Mixfile do
   @version "2.0.2"
   @service "route53"
   @url "https://github.com/ex-aws/ex_aws_#{@service}"
-  @name __MODULE__ |> Module.split |> Enum.take(2) |> Enum.join(".")
+  @name __MODULE__ |> Module.split() |> Enum.take(2) |> Enum.join(".")
 
   def project do
     [
       app: :ex_aws_route53,
       version: @version,
       elixir: "~> 1.5",
-      elixirc_paths: elixirc_paths(Mix.env),
-      start_permanent: Mix.env == :prod,
+      elixirc_paths: elixirc_paths(Mix.env()),
+      start_permanent: Mix.env() == :prod,
       deps: deps(),
       name: @name,
       package: package(),
-      docs: [main: @name, source_ref: "v#{@version}",
-        source_url: @url]
+      docs: [main: @name, source_ref: "v#{@version}", source_url: @url]
     ]
   end
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_),     do: ["lib",]
+  defp elixirc_paths(_), do: ["lib"]
 
   # Run "mix help compile.app" to learn about applications.
   def application do
@@ -39,7 +38,7 @@ defmodule ExAws.Route53.Mixfile do
       {:sweet_xml, ">= 0.0.0", only: [:dev, :test]},
       {:poison, ">= 0.0.0", only: [:dev, :test]},
       {:xml_builder, ">= 0.0.0"},
-      ex_aws(),
+      ex_aws()
     ]
   end
 
@@ -51,11 +50,12 @@ defmodule ExAws.Route53.Mixfile do
   end
 
   defp package do
-    [description: "#{@name} service package",
-     files: ["lib", "config", "mix.exs", "README*"],
-     maintainers: ["Ben Wilson", "Boris Mikhaylov"],
-     licenses: ["MIT"],
-     links: %{github: @url},
+    [
+      description: "#{@name} service package",
+      files: ["lib", "config", "mix.exs", "README*"],
+      maintainers: ["Ben Wilson", "Boris Mikhaylov"],
+      licenses: ["MIT"],
+      links: %{github: @url}
     ]
   end
 end
