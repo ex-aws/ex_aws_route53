@@ -18,19 +18,19 @@ defmodule ExAws.Route53.XmlTest do
   end
 
   test "it add optional node with children that have values" do
-    children = [ {:child, nil, "value_child"} ]
+    children = [{:child, nil, "value_child"}]
     parent = {:node, nil, nil} |> Xml.add_optional_node({:new_node, nil, children})
     assert {:node, nil, [{:new_node, nil, children}]} == parent
   end
 
   test "it add optional node with children that have attrs" do
-    children = [ {:child, %{foo: :bar}, nil} ]
+    children = [{:child, %{foo: :bar}, nil}]
     parent = {:node, nil, nil} |> Xml.add_optional_node({:new_node, nil, children})
     assert {:node, nil, [{:new_node, nil, children}]} == parent
   end
 
   test "it prepends optional node with children" do
-    children = [ {:new_child, nil, "value"} ]
+    children = [{:new_child, nil, "value"}]
     parent = {:node, nil, [:child]} |> Xml.add_optional_node({:new_node, nil, children})
     assert {:node, nil, [{:new_node, nil, children}, :child]} == parent
   end
@@ -41,7 +41,7 @@ defmodule ExAws.Route53.XmlTest do
   end
 
   test "it does not add optional node with children that have no attrs or values" do
-    children = [ {:child, nil, nil} ]
+    children = [{:child, nil, nil}]
     parent = {:node, nil, nil} |> Xml.add_optional_node({:new_node, nil, children})
     assert {:node, nil, nil} == parent
   end

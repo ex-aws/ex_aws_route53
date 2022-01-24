@@ -17,8 +17,10 @@ defmodule ExAws.Route53.Xml do
 
   def add_optional_node(nodes, {_, nil, nil}), do: nodes
 
-  def add_optional_node({name, attrs, nodes} = parent, {_, nil, children} = node) when is_list(children) do
+  def add_optional_node({name, attrs, nodes} = parent, {_, nil, children} = node)
+      when is_list(children) do
     children_with_content = children |> Enum.reject(&without_attrs_or_content/1)
+
     case children_with_content do
       [] -> parent
       _ -> {name, attrs, [node | List.wrap(nodes)]}
