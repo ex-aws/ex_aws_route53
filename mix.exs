@@ -10,7 +10,7 @@ defmodule ExAws.Route53.Mixfile do
     [
       app: :ex_aws_route53,
       version: @version,
-      elixir: "~> 1.5",
+      elixir: "~> 1.10",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       deps: deps(),
