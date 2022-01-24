@@ -72,7 +72,7 @@ defmodule ExAws.Route53 do
           {:action, record_action}
           | {:name, binary}
           | {:type, record_type}
-          | {:ttl, Integer.t()}
+          | {:ttl, integer()}
           | {:records, [String.t(), ...]}
         ]
   @type change_record_sets_opts :: [
