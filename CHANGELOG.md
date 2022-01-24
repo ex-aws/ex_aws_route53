@@ -6,6 +6,7 @@ v2.1
 - Fix warnings against latest ex_aws
 - Add docs package
 - Add metadata
+- Increase minimum Elixir version to 1.10
 
 v2.0.2
 - Fix case handling on xmlns
